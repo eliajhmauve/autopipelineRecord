@@ -22,14 +22,31 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 import urllib.parse
 
+# 嘗試載入環境變數
+try:
+    from env_loader import load_env_file
+    load_env_file()
+except ImportError:
+    # 如果 env_loader 不存在，嘗試手動載入 .env
+    if os.path.exists('.env'):
+        with open('.env', 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ[key.strip()] = value.strip()
+
 class ClaudeN8nCLI:
     def __init__(self):
-        self.host_url = os.getenv('N8N_HOST_URL', 'https://gmgm.zeabur.app')
+        self.host_url = os.getenv('N8N_HOST_URL')
         self.api_key = os.getenv('N8N_API_KEY')
-        
-        if not self.api_key:
-            print("錯誤: 請設定 N8N_API_KEY 環境變數")
-            print("export N8N_API_KEY='your_api_key_here'")
+
+        if not self.host_url or not self.api_key:
+            print("錯誤: 請設定必要的環境變數")
+            print("💡 請確保 .env 文件包含 N8N_HOST_URL 和 N8N_API_KEY")
+            print("   或手動設定環境變數:")
+            print("   export N8N_HOST_URL='your_host_url'")
+            print("   export N8N_API_KEY='your_api_key'")
             sys.exit(1)
         
         self.headers = {

@@ -3,10 +3,19 @@
 ## Environment Setup
 - Use Python 3.9+ for n8n integration tools
 - Store credentials in environment variables, never hardcode in source
+- Copy `.env.example` to `.env` and fill in your actual values:
+  ```bash
+  cp .env.example .env
+  # Edit .env file with your actual API keys
+  ```
 - Required environment variables:
   ```bash
-  export N8N_HOST_URL="https://gmgm.zeabur.app"
-  export N8N_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhNjcyNS1kMTJjLTQzYzItOGJkOC04Y2Y5NjNjYzA4NmMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUwNDg4MjI2fQ.P-b1xY34XA4EjC2NMNMdquYc_gKXJYGRGsBtNkQy3Oo"
+  export N8N_HOST_URL="https://your-n8n-instance.com"
+  export N8N_API_KEY="your_actual_api_key_here"
+  ```
+- Or load from .env file:
+  ```bash
+  source .env  # or use python-dotenv in scripts
   ```
 - Test connection: `curl -H "X-N8N-API-KEY: $N8N_API_KEY" "$N8N_HOST_URL/api/v1/workflows"`
 
@@ -40,13 +49,14 @@
         "command": "npx",
         "args": ["-y", "@ahmad.soliman/mcp-n8n-server"],
         "env": {
-          "N8N_HOST_URL": "https://gmgm.zeabur.app",
-          "N8N_API_KEY": "pcsk_7SezVC_fLKkAEMtjjdAf6EkFMXRvMbGg8BfeJ7v8CVDqmvdSuWRwke5ETmEDDd2M3Q2cY"
+          "N8N_HOST_URL": "https://your-n8n-instance.com",
+          "N8N_API_KEY": "your_mcp_api_key_here"
         }
       }
     }
   }
   ```
+- **注意**: 請使用 `.env` 文件中的 `N8N_MCP_API_KEY` 值
 - Restart Claude Desktop to apply changes
 
 ## Common Workflow Patterns

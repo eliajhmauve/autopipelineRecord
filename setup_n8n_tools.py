@@ -42,27 +42,51 @@ def install_requirements():
     
     return True
 
+def load_env_file():
+    """載入 .env 文件"""
+    env_file = '.env'
+    if os.path.exists(env_file):
+        print(f"📁 找到 .env 文件，正在載入...")
+        with open(env_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    os.environ[key.strip()] = value.strip()
+        return True
+    return False
+
 def setup_environment():
     """設置環境變數"""
     print("\n🔧 設置環境變數...")
-    
-    # 從 CLAUDE.md 讀取預設值
-    default_host = "https://gmgm.zeabur.app"
-    default_api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkOWRhNjcyNS1kMTJjLTQzYzItOGJkOC04Y2Y5NjNjYzA4NmMiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwiaWF0IjoxNzUwNDg4MjI2fQ.P-b1xY34XA4EjC2NMNMdquYc_gKXJYGRGsBtNkQy3Oo"
-    
+
+    # 嘗試載入 .env 文件
+    env_loaded = load_env_file()
+    if env_loaded:
+        print("✅ 已從 .env 文件載入環境變數")
+
+    # 預設值（不包含實際的 API key）
+    default_host = "https://your-n8n-instance.com"
+
     # 檢查現有環境變數
     current_host = os.getenv('N8N_HOST_URL')
     current_api_key = os.getenv('N8N_API_KEY')
-    
+
     if current_host and current_api_key:
         print(f"✅ 環境變數已設置:")
         print(f"   N8N_HOST_URL: {current_host}")
         print(f"   N8N_API_KEY: {current_api_key[:20]}...")
         return current_host, current_api_key
-    
+
     # 設置環境變數
+    print("\n⚠️  未找到環境變數，請手動輸入:")
+    print("💡 建議: 複製 .env.example 到 .env 並填入您的實際值")
     host_url = input(f"請輸入 n8n 主機 URL (預設: {default_host}): ").strip() or default_host
-    api_key = input(f"請輸入 n8n API Key (預設: 使用 CLAUDE.md 中的 key): ").strip() or default_api_key
+    api_key = input(f"請輸入 n8n API Key: ").strip()
+
+    if not api_key:
+        print("❌ API Key 不能為空")
+        sys.exit(1)
     
     # 設置到當前 session
     os.environ['N8N_HOST_URL'] = host_url

@@ -4,6 +4,7 @@
 .env.development
 .env.test
 .env.production
+.env.*
 
 # API Keys 和憑證
 *.key
@@ -11,6 +12,24 @@
 *.p12
 credentials.json
 config.json
+secrets.json
+auth.json
+
+# LINE Bot 相關敏感文件
+line_credentials.json
+line_config.json
+channel_access_token.txt
+
+# n8n 相關敏感文件
+n8n_credentials.json
+n8n_config.json
+
+# 其他可能的敏感文件
+*_secret*
+*_token*
+*_key*
+*_password*
+*_credential*
 
 # Python
 __pycache__/

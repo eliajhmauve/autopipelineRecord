@@ -41,7 +41,7 @@ class N8nIntegration:
             print("💡 請確保 .env 文件包含 N8N_HOST_URL 和 N8N_API_KEY")
             print("   或手動設定環境變數:")
             print("   export N8N_HOST_URL='your_host_url'")
-            print("   export N8N_API_KEY='your_api_key'")
+            print("   export N8N_API_KEY='your_actual_api_key_here'")
             sys.exit(1)
         
         self.headers = {

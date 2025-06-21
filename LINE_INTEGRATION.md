@@ -5,12 +5,14 @@
 1. 登入 [LINE Developers Console](https://developers.line.biz/console/)
 2. 創建一個新的Provider（如果尚未有）
 3. 在Provider下創建一個新的Messaging API頻道
-4. 記錄以下重要信息：
-   - My user ID `Uea70d34f1cdf75eefc9477fbb3b6de03`
-   - Bot basic ID `@826nylpb`
-   - Channel ID `2007612302`
-   - Channel Secret `2e017b804f5eb49f37d335214e1cf2ea`
-   - Channel Access Token (長期)：已提供 `/45UU+ULabECHjdlRvD2enNgh9ha3QWrEzCPhCAutlYycIcnatAnEqrK9T6i8pKJs7VOLFJXYZGXKKE85kQEAhikH8VLbzWahavHJJQ54trx/aKX4T0Z0vWr/IzjfEpOvSkQw2dNRTeToWfqAef9LQdB04t89/1O/w1cDnyilFU=`
+4. 記錄以下重要信息並保存到 `.env` 文件中：
+   - My user ID → `LINE_USER_ID`
+   - Bot basic ID → `LINE_BOT_BASIC_ID`
+   - Channel ID → `LINE_CHANNEL_ID`
+   - Channel Secret → `LINE_CHANNEL_SECRET`
+   - Channel Access Token → `LINE_CHANNEL_ACCESS_TOKEN`
+
+⚠️ **重要安全提醒**: 所有實際的憑證資訊都已移至 `.env` 文件中，請勿在此文檔或代碼中硬編碼任何敏感資訊。
 
 ## 部署到Zeabur
 
@@ -19,12 +21,12 @@
    - 連接GitHub帳戶（Settings → Integrations）
    - 創建新項目（New Project）
    - 選擇Git Services，並選擇GitHub存儲庫 `eliajhmauve/line-mcp-server`
-3. 設置環境變量：
-   - `CHANNEL_ACCESS_TOKEN`
-   - `CHANNEL_SECRET`
-   - `MY_USER_ID`
-   - `BOT_BASIC_ID`
-   - `CHANNEL_ID`
+3. 設置環境變量（從 `.env` 文件載入）：
+   - `LINE_CHANNEL_ACCESS_TOKEN`
+   - `LINE_CHANNEL_SECRET`
+   - `LINE_USER_ID`
+   - `LINE_BOT_BASIC_ID`
+   - `LINE_CHANNEL_ID`
 
 ## Webhook 設置
 
@@ -56,15 +58,17 @@ https://gmgm.zeabur.app/webhook/line
 
 4. 添加LINE節點進行回覆：
    - 安裝LINE節點（如果尚未安裝）
-   - 配置憑證，使用提供的Channel Access Token
+   - 配置憑證，使用 `.env` 文件中的 `LINE_CHANNEL_ACCESS_TOKEN`
    - 設置操作為"Reply to Message"
 
 ## 必要的憑證
 
-1. **LINE Channel Access Token**：已提供
-2. **LINE Channel Secret**：需要從LINE Developers Console獲取
-3. **OpenAI API Key**：用於o4-mini模型
-4. **Google API憑證**：用於Calendar、Sheets和Gmail整合
+所有憑證都應存儲在 `.env` 文件中：
+
+1. **LINE Channel Access Token** → `LINE_CHANNEL_ACCESS_TOKEN`
+2. **LINE Channel Secret** → `LINE_CHANNEL_SECRET`
+3. **OpenAI API Key** → `OPENAI_API_KEY`
+4. **Google API憑證** → 相關的 Google API 環境變數
 
 ## 測試Webhook
 
@@ -82,7 +86,9 @@ https://gmgm.zeabur.app/webhook/line
 
 ## 安全注意事項
 
-- 不要在代碼或工作流中硬編碼任何API密鑰或令牌
-- 使用n8n的憑證存儲功能安全地存儲所有敏感信息
-- 定期輪換Channel Access Token
-- 監控API使用情況，防止未授權訪問
+- ✅ **已實施**: 所有敏感資訊已移至 `.env` 文件
+- ✅ **已實施**: `.env` 文件受 `.gitignore` 保護，不會被推送到 GitHub
+- 🔄 **建議**: 定期輪換 Channel Access Token
+- 📊 **建議**: 監控 API 使用情況，防止未授權訪問
+- 🔐 **重要**: 使用 n8n 的憑證存儲功能時，從環境變數載入敏感資訊
+- 📋 **檢查**: 確保所有團隊成員都有正確的 `.env` 文件配置
